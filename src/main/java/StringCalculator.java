@@ -9,21 +9,21 @@ public class StringCalculator {
     }
 
     public String add(String text) {
-
+        //Test 1
         if (text.isEmpty()) {
             return "0";
         }
-
+        //Test 2
         boolean containCommaOrNewLine = (text.contains(",") || text.contains("\n"));
         if (!containCommaOrNewLine) {
-            int result = parseInt(text);
-            return String.valueOf(result);
+            return text;
         }
 
         String personalizedDelimiter = "";
         String formattedText = "";
         String[] arrayNumbers;
 
+        //Test 7
         if (text.substring(0, 2).equals("//")) {
             for (int i = 0; i < text.length(); i++) {
                 if (text.charAt(i) == '\n') {
@@ -48,9 +48,11 @@ public class StringCalculator {
 
 
         } else {
+            //Test 4
             arrayNumbers = text.split(",|\n");
         }
 
+        //Test 8
         if (text.contains("-")) {
             String notAllowedValues = " ";
             for (int i = 0; i < arrayNumbers.length; i++) {
@@ -65,12 +67,12 @@ public class StringCalculator {
             return "Negative not allowed :" + notAllowedValues;
         }
 
-
+        //Test 6
         if (text.charAt(text.length() - 1) == ',') {
             return "Number expected but EOF found";
         }
 
-
+        //Test 5
         if (text.contains(",\n")) {
 
             int notPermittedInputIndex = 0;
@@ -83,8 +85,8 @@ public class StringCalculator {
             return "Number expected but '\\n' found at position " + notPermittedInputIndex;
         }
 
+        //Test 3
         return String.valueOf((int) sumMultipleNumbers(arrayNumbers, arrayNumbers.length));
-
     }
 
     private double sumMultipleNumbers(String[] arrayNumbers, int lenght) {
