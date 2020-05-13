@@ -13,6 +13,11 @@ public class StringCalculator {
         if (text.isEmpty()) {
             return "0";
         }
+
+        return sumNumbers(text);
+    }
+
+    private String sumNumbers(String text) {
         //Test 2
         boolean containCommaOrNewLine = (text.contains(",") || text.contains("\n"));
         if (!containCommaOrNewLine) {
@@ -35,18 +40,9 @@ public class StringCalculator {
             }
 
             if (formattedText.contains(",")) {
-                int notPermittedInputIndex = 0;
-                for (int i = 0; i < text.length(); i++) {
-                    if (formattedText.substring(i, i + 1).equals(",")) {
-                        notPermittedInputIndex = i;
-                        break;
-                    }
-                }
-                return "'" + personalizedDelimiter + "' expected but ',' found at position " + notPermittedInputIndex;
+                return checkNotPermittedDelimiter(formattedText, personalizedDelimiter);
             }
             arrayNumbers = formattedText.split(personalizedDelimiter);
-
-
         } else {
             //Test 4
             arrayNumbers = text.split(",|\n");
@@ -54,17 +50,7 @@ public class StringCalculator {
 
         //Test 8
         if (text.contains("-")) {
-            String notAllowedValues = " ";
-            for (int i = 0; i < arrayNumbers.length; i++) {
-                if (parseInt(arrayNumbers[i]) < 0) {
-
-                    notAllowedValues = notAllowedValues + arrayNumbers[i] + ", ";
-                }
-            }
-
-            notAllowedValues = notAllowedValues.substring(0, notAllowedValues.length() - 2);
-
-            return "Negative not allowed :" + notAllowedValues;
+            return containsNegativeNumbers(arrayNumbers);
         }
 
         //Test 6
@@ -74,19 +60,46 @@ public class StringCalculator {
 
         //Test 5
         if (text.contains(",\n")) {
-
-            int notPermittedInputIndex = 0;
-            for (int i = 0; i < text.length(); i++) {
-                if (text.substring(i, i + 2).equals(",\n")) {
-                    notPermittedInputIndex = i + 1;
-                    break;
-                }
-            }
-            return "Number expected but '\\n' found at position " + notPermittedInputIndex;
+            return checkNotPermittedNewLine(text);
         }
 
         //Test 3
         return String.valueOf((int) sumMultipleNumbers(arrayNumbers, arrayNumbers.length));
+    }
+
+    private String checkNotPermittedNewLine(String text) {
+        int notPermittedInputIndex = 0;
+        for (int i = 0; i < text.length(); i++) {
+            if (text.substring(i, i + 2).equals(",\n")) {
+                notPermittedInputIndex = i + 1;
+                break;
+            }
+        }
+        return "Number expected but '\\n' found at position " + notPermittedInputIndex;
+    }
+
+    private String containsNegativeNumbers(String[] arrayNumbers) {
+        String notAllowedValues = " ";
+        for (int i = 0; i < arrayNumbers.length; i++) {
+            if (parseInt(arrayNumbers[i]) < 0) {
+                notAllowedValues = notAllowedValues + arrayNumbers[i] + ", ";
+            }
+        }
+
+        notAllowedValues = notAllowedValues.substring(0, notAllowedValues.length() - 2);
+
+        return "Negative not allowed :" + notAllowedValues;
+    }
+
+    private String checkNotPermittedDelimiter(String formattedText, String personalizedDelimiter) {
+        int notPermittedInputIndex = 0;
+        for (int i = 0; i < formattedText.length(); i++) {
+            if (formattedText.substring(i, i + 1).equals(",")) {
+                notPermittedInputIndex = i;
+                break;
+            }
+        }
+        return "'" + personalizedDelimiter + "' expected but ',' found at position " + notPermittedInputIndex;
     }
 
     private double sumMultipleNumbers(String[] arrayNumbers, int lenght) {
